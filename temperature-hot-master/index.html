@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Temperature Hot</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        body {
+            background: url(images/bg-image.jpg) no-repeat;
+            background-size: cover;
+            height: 100vh;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <form class="col-md-6 m-auto py-5">
+            <div class="input-group mb-3">
+                <input type="text" id="location" class="form-control" placeholder="Enter a location for Weather ...">
+                <div class="input-group-append">
+                    <button type="button" class="btn btn-danger" id="search-btn">Search</button>
+                </div>
+            </div>
+        </form>
+        <div class="weather-status text-white text-center">
+            <img src="https://openweathermap.org/img/wn/02d@2x.png" alt="">
+            <h1 id="city">Dhaka</h1>
+            <h3><span id="temp">38.06</span>&deg;C</h3>
+            <h1 id="status" class="lead">Clouds</h1>
+        </div>
+    </div>
+
+    <script>
+
+        const apiLink = {
+        key: "b71be8aee5b3d4a93b5f98b6abef559c",
+        base: "https://api.openweathermap.org/data/2.5/weather",
+        };
+
+        function fetchData(city){
+            const link = (`${apiLink.base}?q=${city}&units=metric&appid=${apiLink.key}`);
+            fetch(link)
+            .then(res => res.json())
+            .then(data => {
+                updateData(data);
+            })
+        }
+
+        function updateData(data){
+            document.getElementById('city').innerText = data.name || "Unknown City";
+            document.getElementById('temp').innerText = data.main.temp;
+            document.getElementById('status').innerText = data.weather[0].main;
+
+            document.getElementById('location').value = "";
+        }
+
+        document.getElementById('search-btn').addEventListener('click', function(){
+            const Location = document.getElementById('location').value;
+            fetchData(Location);
+        })
+    </script>
+
+</body>
+
+</html>
